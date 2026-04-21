@@ -1,10 +1,13 @@
+import db.DBConn;
 import exceapion.MyException;
 import view.UserView;
 
+import java.sql.Connection;
 import java.util.Scanner;
 
 public class TelBookMain {
     public static void main(String[] args) throws MyException {
+        //Connection connection = DBConn.getCommection();
         Scanner sc = new Scanner(System.in);
 
         //UserView 인스턴스를 생성
