@@ -21,7 +21,7 @@ public class InputValidation {
     //전화번호 검증 - 형식 체크(010-XXXX-XXXX)만 입력 가능
     //"-"도 반드시 필요
     public void phoneCheck(String phone) throws MyException{
-        boolean check = Pattern.matches("(010)-(||d{4})-(||d{4})",phone);
+        boolean check = Pattern.matches("(010)-(\\d{4})-(\\d{4})",phone);
         if (! check){
             throw new MyException("※ 전화번호 형식은 [010-XXXX-XXXX]입니다.");
         }
