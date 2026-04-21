@@ -1,5 +1,9 @@
 package view;
 
+import exceapion.InputValidation;
+import exceapion.MyException;
+
+import javax.xml.namespace.QName;
 import java.util.Scanner;
 
 public class UserView {
@@ -9,7 +13,36 @@ public class UserView {
         this.scanner = scanner;
     }
 
-    public void insert() {
+    public void insert() throws MyException{
+        // 검증 클래스 생성
+        InputValidation validation = new InputValidation();
+        //이름, 나이, 전화번호, 주소
+        System.out.println("==전화번호 등록==");
+        //이름 옳바른 값이 들어올 때 까지 반복
+        boolean nameOK = false;
+        do {
+            try{
+                //이름 : 무조건 한글만 중간공백 없이
+                System.out.println("이름 :");
+                String name = scanner.next();
+                validation.nameCheck(name);
+                nameOK = true;
+            }catch (MyException e){
+                System.out.println(e.getMessage());
+            }
+        }while(! nameOK);
+
+
+        //나이 :0세~120세 사이값
+        System.out.println("나이 :");
+        int age = scanner.nextInt();
+        //주소
+        System.out.println("주소 :");
+        String address = scanner.next();
+        //전화번호(010-XXXX-XXXX
+        System.out.println("이름 :");
+        int phone = scanner.nextInt();
+
     }
 
     public void update() {
