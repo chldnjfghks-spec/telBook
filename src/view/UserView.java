@@ -2,25 +2,30 @@ package view;
 
 import exceapion.InputValidation;
 import exceapion.MyException;
+import service.TelBookService;
 
 import javax.xml.namespace.QName;
 import java.util.Scanner;
 
 public class UserView {
     private final Scanner scanner;
+    private final TelBookService service;
     
-    public UserView(Scanner scanner){
+    public UserView(Scanner scanner, TelBookService service){
         this.scanner = scanner;
+        this.service = service;
     }
 
     public void insert() throws MyException{
         // 검증 클래스 생성
         InputValidation validation = new InputValidation();
         //입력자료 저장을 위한 변수 선언
-        String name;
-        int age;
-        String phone;
-        String address;
+        String name = "";
+        int age = 0;
+        String phone = "";
+        String address = "";
+
+
         //이름, 나이, 전화번호, 주소
         System.out.println("==전화번호 등록==");
         //이름 옳바른 값이 들어올 때 까지 반복
@@ -67,7 +72,7 @@ public class UserView {
             }
         }while (!phoneOK);
 
-
+        service.insert(name, age, address, phone);
     }
 
     public void update() {
