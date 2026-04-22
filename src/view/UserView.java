@@ -1,10 +1,13 @@
 package view;
 
+import dto.TelDto;
 import exceapion.InputValidation;
 import exceapion.MyException;
 import service.TelBookService;
 
 import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserView {
@@ -82,6 +85,18 @@ public class UserView {
     }
 
     public void searchAll() {
+        List<TelDto> list = new ArrayList<>();
+        list = service.getListAll();
+        //list가 비어있는지 확인
+        if (list.isEmpty()){
+            System.out.println("주소록이 비어있습니다.");
+            return;
+        }
+        //리스트 출력
+        for (TelDto dto : list){
+            System.out.println(dto);
+        }
+        list.forEach(x -> System.out.println(x));
     }
 
     public void searchOne() {
