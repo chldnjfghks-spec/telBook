@@ -25,7 +25,11 @@ public class TelBookService {
         return reporitory.findAll();
     }
 
-    public List<TelDto> getListOne() {
+    public List<TelDto> getListOne(int id) {
         return reporitory.findById(id);
+    }
+
+    public int delete(int id) {
+        return reporitory.deleteById(id);
     }
 }
