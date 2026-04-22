@@ -96,9 +96,17 @@ public class UserView {
         for (TelDto dto : list){
             System.out.println(dto);
         }
-        list.forEach(x -> System.out.println(x));
+        //list.forEach(x -> System.out.println(x));
     }
 
     public void searchOne() {
+        System.out.println("검색 할 ID :");
+        int id = scanner.nextInt();
+        List<TelDto> list = service.getListOne();
+        if (list.isEmpty()){
+            System.out.println("해당 ID가 없습니다.");
+        }else {
+            list.forEach(x -> System.out.println(x ));
+        }
     }
 }
