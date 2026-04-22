@@ -75,7 +75,7 @@ public class TelBookReporitory {
         PreparedStatement psmt = null;
         ResultSet rs = null;
         try {
-            String sql = "SELET * FROM telbood WHERE id = ?";
+            String sql = "SELECT * FROM telbood WHERE id = ?";
             psmt = conn.prepareStatement(sql);
             psmt.setLong(1, id);
             rs = psmt.executeQuery();
@@ -97,19 +97,48 @@ public class TelBookReporitory {
     }
 
     public int deleteById(int id) {
-        PreparedStatement psmt = null;
-        int result = 0;
+        
+            PreparedStatement psmt = null;
+            int result = 0;
 
-        try {
-            String sql = "DELETE FROM telbook WHERE id = ?";
-            psmt = conn.prepareStatement(sql);
-            psmt.setInt(1, id);
-            psmt.close();
-        } catch (Exception e) {
-            System.out.println("deleteById Error:" + e.getMessage());
+            try {
+                String sql = "DELETE FROM telbook WHERE id = ?";
+                psmt = conn.prepareStatement(sql);
+                psmt.setInt(1, id);
+
+                result = psmt.executeUpdate(); // ⭐ 이거 반드시 필요
+
+            } catch (Exception e) {
+                System.out.println("deleteById Error:" + e.getMessage());
+            } finally {
+                try { if(psmt != null) psmt.close(); } catch(Exception e){}
+            }
+
+            return result;
         }
 
+    public void update(TelDto updateData) {
+        PreparedStatement psmt = null;
+        //2.쿼리 생성
+        int result = 0;
+        try {
+            String sql = "update telbook ";
+            sql =sql + "set name = ?, ";
+            sql = sql + "age = ?, ";
+            sql = sql + "address = ?, ";
+            sql = sql + "phone =? ";
+            sql = sql + "where id = ? ";
+            psmt = conn.prepareStatement(sql);
+            psmt.setString(1, updateData.getName());
+            psmt.setInt(2, updateData.getAge());
+            psmt.setString(3, updateData.getAddress());
+            psmt.setString(4, updateData.getTelNumber());
+            psmt.setLong(5,updateData.getId());
+            psmt.executeQuery();
+            psmt.close();
+        } catch (Exception e) {
+            System.out.println("UPDATE 오류 :" + e.getMessage());
+        }
 
-        return result;
     }
 }
