@@ -6,6 +6,7 @@ import dto.TelDto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,21 +23,22 @@ public class TelBookReporitory {
         PreparedStatement psmt = null;
         //2.쿼리 생성
         int result = 0;
-        try{
+        try {
             String sql = "INSERT INTO telbook (name, age, address, phone) VALUES(?,?,?,?)";
             psmt = conn.prepareStatement(sql);
             psmt.setString(1, dto.getName());
-            psmt.setInt(2,dto.getAge());
-            psmt.setString(3,dto.getAddress());
-            psmt.setString(4,dto.getTelNumber());
+            psmt.setInt(2, dto.getAge());
+            psmt.setString(3, dto.getAddress());
+            psmt.setString(4, dto.getTelNumber());
             result = psmt.executeUpdate();
             psmt.close();
-        }catch (Exception e){
-            System.out.println("INSERT 오류 :"+ e.getMessage());
+        } catch (Exception e) {
+            System.out.println("INSERT 오류 :" + e.getMessage());
         }
         return result;
     }
-    public List<TelDto>findAll(){
+
+    public List<TelDto> findAll() {
         List<TelDto> dtoList = new ArrayList<>();
         PreparedStatement psmt = null;
         ResultSet rs = null;
@@ -45,9 +47,9 @@ public class TelBookReporitory {
             psmt = conn.prepareStatement(sql);
             rs = psmt.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
                 //읽어온 레코드를 담을 빈 DTO를 생성
-                TelDto dto =  new TelDto( );
+                TelDto dto = new TelDto();
                 dto.setId(rs.getLong("id"));
                 dto.setName(rs.getString("name"));
                 dto.setAge(rs.getInt("age"));
@@ -60,8 +62,8 @@ public class TelBookReporitory {
             }
             psmt.close();
             rs.close();
-        }catch (Exception e){
-            System.out.println("Find All Error :"+e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Find All Error :" + e.getMessage());
         }
         //psmt 닫아주는 작업
 
@@ -75,9 +77,9 @@ public class TelBookReporitory {
         try {
             String sql = "SELET * FROM telbood WHERE id = ?";
             psmt = conn.prepareStatement(sql);
-            psmt.setLong(1,id);
+            psmt.setLong(1, id);
             rs = psmt.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 TelDto dto = new TelDto();
                 dto.setId(rs.getLong("id"));
                 dto.setName(rs.getString("name"));
@@ -86,9 +88,28 @@ public class TelBookReporitory {
                 dto.setTelNumber(rs.getString("phone"));
                 dtoList.add(dto);
             }
-        }catch (Exception e){
-            System.out.println("FindById Error:"+e.getMessage());
+            psmt.close();
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("FindById Error:" + e.getMessage());
         }
         return dtoList;
+    }
+
+    public int deleteById(int id) {
+        PreparedStatement psmt = null;
+        int result = 0;
+
+        try {
+            String sql = "DELETE FROM telbook WHERE id = ?";
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1, id);
+            psmt.close();
+        } catch (Exception e) {
+            System.out.println("deleteById Error:" + e.getMessage());
+        }
+
+
+        return result;
     }
 }
