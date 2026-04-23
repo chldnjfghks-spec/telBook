@@ -128,6 +128,7 @@ public class TelBookReporitory {
             sql = sql + "address = ?, ";
             sql = sql + "phone =? ";
             sql = sql + "where id = ? ";
+
             psmt = conn.prepareStatement(sql);
             psmt.setString(1, updateData.getName());
             psmt.setInt(2, updateData.getAge());
@@ -140,5 +141,40 @@ public class TelBookReporitory {
             System.out.println("UPDATE 오류 :" + e.getMessage());
         }
 
+    }
+
+    public List<TelDto> search(int choice, String keyword) {
+        List<TelDto> dtoList = new ArrayList<>();
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        String sql = "";
+        try {
+            if(choice == 1){
+                // 이름 검색
+                sql = "SELECT * FROM telbook WHERE name LIKE ?";
+            } else {
+                // 주소 검색
+                sql = "SELECT * FROM telbook WHERE address LIKE ?";
+            }
+
+            psmt = conn.prepareStatement(sql);
+            psmt.setString(1, "%" + keyword + "%");
+            rs = psmt.executeQuery();
+            // 리스트에 추가
+            while (rs.next()) {
+                TelDto dto = new TelDto();
+                dto.setId(rs.getLong("id"));
+                dto.setName(rs.getString("name"));
+                dto.setAge(rs.getInt("age"));
+                dto.setAddress(rs.getString("address"));
+                dto.setTelNumber(rs.getString("phone"));
+                dtoList.add(dto);
+            }
+            psmt.close();
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Search Error : " + e.getMessage());
+        }
+        return dtoList;
     }
 }

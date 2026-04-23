@@ -37,4 +37,8 @@ public class TelBookService {
         System.out.println(updateData);
         reporitory.update(updateData);
     }
+
+    public List<TelDto> search(int choice, String keyword) {
+        return reporitory.search(choice,keyword );
+    }
 }
